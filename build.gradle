@@ -142,8 +142,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		loaders = ['quilt']
 		detectLoaders = false
 		dependencies {
-			required.project "switchy"
-			required.project "styled-chat"
+			required.project "styled-nicknames"
 		}
 		changelog = "Changelog: https://github.com/sisby-folk/drogstyle/releases/tag/v" + origVersion
 		syncBodyFrom = rootProject.file("README.md").text
