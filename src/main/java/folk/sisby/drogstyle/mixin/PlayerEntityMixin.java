@@ -2,16 +2,18 @@ package folk.sisby.drogstyle.mixin;
 
 import com.unascribed.drogtor.DrogtorPlayer;
 import eu.pb4.stylednicknames.NicknameHolder;
+import folk.sisby.drogstyle.DrogstylePlayer;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.HoverEvent;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
 
 @Mixin(value = PlayerEntity.class, priority = 1001)
-public class PlayerEntityMixin implements DrogtorPlayer {
+public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 	private NicknameHolder getHolder() {
 		return (NicknameHolder) ((ServerPlayerEntity) (Object) this).networkHandler;
 	}
@@ -23,7 +25,7 @@ public class PlayerEntityMixin implements DrogtorPlayer {
 
 	@Override
 	public void drogtor$setNameColor(@Nullable Formatting fmt) {
-
+		drogstyle$setNameColor(TextColor.fromFormatting(fmt));
 	}
 
 	@Override
@@ -43,10 +45,9 @@ public class PlayerEntityMixin implements DrogtorPlayer {
 	 */
 	@Override
 	public @Nullable Formatting drogtor$getNameColor() {
-		Text nickname = getHolder().sn_getParsed();
-		if (nickname == null) return null;
-		if (nickname.getStyle().getColor() == null) return null;
-		return Formatting.byName(nickname.getStyle().getColor().getName());
+		TextColor color = drogstyle$getNameColor();
+		if (color == null) return null;
+		return Formatting.byName(color.getName());
 	}
 
 	@Override
@@ -63,5 +64,17 @@ public class PlayerEntityMixin implements DrogtorPlayer {
 	@Override
 	public boolean drogtor$isActive() {
 		return getHolder().sn_get() != null;
+	}
+
+	@Override
+	public void drogstyle$setNameColor(@Nullable TextColor color) {
+
+	}
+
+	@Override
+	public @Nullable TextColor drogstyle$getNameColor() {
+		Text nickname = getHolder().sn_getParsed();
+		if (nickname == null) return null;
+		return nickname.getStyle().getColor();
 	}
 }

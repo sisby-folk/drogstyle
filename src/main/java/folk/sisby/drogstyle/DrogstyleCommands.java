@@ -75,13 +75,8 @@ public class DrogstyleCommands implements CommandRegistrationCallback {
 	}
 
 	private void informDisplayName(ServerPlayerEntity player, Text oldDn) {
-		player.sendMessage(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName()), false);
-		if (oldDn != null) {
-			Text t = oldDn.copyContentOnly().append(Text.literal(" is now known as ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW))).append(player.getDisplayName());
-			for (ServerPlayerEntity spe : player.server.getPlayerManager().getPlayerList()) {
-				if (spe != player) spe.sendMessage(t, false);
-			}
-		}
+		player.sendMessage(Text.translatable("commands.drogstyle.nick.success", player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName()), false);
+		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn + "' -> '" + player.getDisplayName() + "' [" + player.getGameProfile().getName() + "]");
 	}
 
 	private void informBio(ServerPlayerEntity player) {

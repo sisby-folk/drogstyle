@@ -21,6 +21,9 @@
 		"entrypoints": {
 			"init": [
 				"folk.sisby.drogstyle.Drogstyle"
+			],
+			"events": [
+				"folk.sisby.drogstyle.DrogstyleCommands"
 			]
 		},
 		"depends": [
