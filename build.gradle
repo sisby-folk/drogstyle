@@ -1,0 +1,169 @@
+buildscript {
+	repositories {
+		gradlePluginPortal()
+	}
+	dependencies {
+		classpath 'com.modrinth.minotaur:Minotaur:2.6.0'
+		classpath "com.github.breadmoirai:github-release:2.4.1"
+	}
+}
+
+plugins {
+	id 'maven-publish'
+	alias libs.plugins.loom
+}
+
+archivesBaseName = project.archives_base_name
+
+def mc_major = '1.19'
+def mc = mc_major + '.2'
+def default_branch = '1.19'
+
+def origVersion = project.version
+project.version = project.version + "+" + mc_major
+group = project.maven_group
+
+repositories {
+	mavenLocal()
+	maven {
+		url = "https://maven.proxyfox.dev/"
+		content {
+			includeGroup "folk.sisby"
+		}
+	}
+	maven {
+		url 'https://repo.sleeping.town'
+		content {
+			includeGroup 'com.unascribed'
+		}
+	}
+	maven {
+		url = "https://api.modrinth.com/maven"
+		content {
+			includeGroup "maven.modrinth"
+		}
+	}
+	maven {
+		name = "TerraformersMC"
+		url = "https://maven.terraformersmc.com/"
+	}
+	maven {
+		name = "Ladysnake Libs"
+		url = "https://ladysnake.jfrog.io/artifactory/mods"
+	}
+	maven {
+		name = "NucleoidMC"
+		url = uri("https://maven.nucleoid.xyz/")
+	}
+
+	// Jitpack
+	maven {
+		url 'https://jitpack.io'
+		content {
+			// Avoids sending everything through JitPack, which can be slow.
+			// Add any further using `includeGroup 'com.example'`
+			includeGroupByRegex 'com\\.github\\..*'
+		}
+	}
+}
+
+dependencies {
+	// // Base // //
+	minecraft libs.mc
+	mappings variantOf(libs.qm) { classifier "intermediary-v2" }
+	modImplementation libs.ql
+	modImplementation libs.qsl
+
+	modImplementation libs.styledNicknames
+	modImplementation libs.playerData
+	modImplementation libs.placeholder
+}
+
+processResources {
+	final Map<String, String> map = [
+			"version": version.toString(),
+			"mc"  : libs.versions.mc.get(),
+			"ql"  : libs.versions.ql.get(),
+			"qsl"  : libs.versions.qsl.get(),
+			"styledNicknames": libs.versions.styledNicknames.get()
+	]
+
+	inputs.properties(map)
+	filesMatching('quilt.mod.json') { expand(map) }
+}
+
+tasks.withType(JavaCompile).configureEach {
+	it.options.encoding = "UTF-8"
+	it.options.release = 17
+}
+
+java {
+	withSourcesJar()
+}
+
+jar {
+	from("LICENSE.txt") {
+		rename { "${it}_${archivesBaseName}" }
+	}
+}
+
+publishing {
+	publications {
+		mavenJava(MavenPublication) {
+			from components.java
+
+			artifactId = project.archives_base_name
+		}
+	}
+
+	repositories {
+		if (System.getenv("SWITCHY_MAVEN_URL")) {
+			maven {
+				url = System.getenv("SWITCHY_MAVEN_URL")
+				credentials {
+					username = System.getenv("SWITCHY_MAVEN_USERNAME")
+					password = System.getenv("SWITCHY_MAVEN_PASSWORD")
+				}
+			}
+		}
+	}
+}
+
+if (System.getenv("MODRINTH_TOKEN")) {
+	apply plugin: "com.modrinth.minotaur"
+	modrinth {
+		token = System.getenv("MODRINTH_TOKEN")
+		projectId = 'drogstyle'
+		versionNumber = project.version
+		versionName = origVersion
+		versionType = 'release'
+		uploadFile = remapJar
+		gameVersions = [mc]
+		loaders = ['quilt']
+		detectLoaders = false
+		dependencies {
+			required.project "switchy"
+			required.project "styled-chat"
+		}
+		changelog = "Changelog: https://github.com/sisby-folk/drogstyle/releases/tag/v" + origVersion
+		syncBodyFrom = rootProject.file("README.md").text
+	}
+}
+
+if (System.getenv("GITHUB_TOKEN")) {
+	apply plugin: "com.github.breadmoirai.github-release"
+	githubRelease {
+		token System.getenv("GITHUB_TOKEN")
+		owner "sisby-folk"
+		repo "drogstyle"
+		tagName 'v' + origVersion
+		releaseName origVersion
+		targetCommitish default_branch
+		draft false
+		prerelease false
+		releaseAssets remapJar.archiveFile
+		allowUploadToExisting true
+		generateReleaseNotes true
+	}
+	tasks.githubRelease.dependsOn remapJar
+}

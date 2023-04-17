@@ -1,0 +1,52 @@
+{
+	"schema_version": 1,
+	"quilt_loader": {
+		"group": "folk.sisby",
+		"id": "drogstyle",
+		"version": "${version}",
+		"metadata": {
+			"name": "Drogstyle",
+			"description": "A simplified UX skin for styled nicknames",
+			"contributors": {
+				"Sisby Folk": "Owner"
+			},
+			"contact": {
+				"homepage": "https://modrinth.com/mod/drogstyle",
+				"issues": "https://github.com/sisby-folk/drogstyle/issues",
+				"sources": "https://github.com/sisby-folk/drogstyle"
+			},
+			"icon": "assets/drogstyle/icon.png"
+		},
+		"intermediate_mappings": "net.fabricmc:intermediary",
+		"entrypoints": {
+			"init": [
+				"folk.sisby.drogstyle.Drogstyle"
+			]
+		},
+		"depends": [
+			{
+				"id": "minecraft",
+				"versions": ">=${mc}"
+			},
+			{
+				"id": "quilt_loader",
+				"versions": ">=${ql}"
+			},
+			{
+				"id": "quilt_base",
+				"versions": ">=${qsl}"
+			},
+			{
+				"id": "styled-nicknames",
+				"versions": ">=${styledNicknames}"
+			}
+		],
+		"provides": [
+			{
+				"id": "drogtor",
+				"version": "1.1.3+1.19"
+			}
+		]
+	},
+	"mixin": "drogstyle.mixins.json"
+}

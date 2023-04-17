@@ -1,0 +1,48 @@
+pluginManagement {
+	repositories {
+		maven {
+			name = 'Quilt'
+			url = 'https://maven.quiltmc.org/repository/release'
+		}
+		// Currently needed for Intermediary and other temporary dependencies
+		maven {
+			name = 'Fabric'
+			url = 'https://maven.fabricmc.net/'
+		}
+		gradlePluginPortal()
+	}
+}
+
+dependencyResolutionManagement {
+	versionCatalogs {
+		libs {
+			def mc_major = '1.19'
+			def mc = mc_major + '.2'
+
+			// // Build Tools // //
+			version('loom', '1.0.+')
+
+			plugin('loom', 'org.quiltmc.loom').versionRef('loom')
+
+			// // Base // //
+			version('mc', mc)
+			version('ql', "0.17.10")
+			version('qm', "${mc}+build.21")
+			version('qsl', "3.0.0-beta.29+${mc}")
+
+			library('mc', 'mojang', 'minecraft').versionRef('mc')
+			library('ql', 'org.quiltmc', 'quilt-loader').versionRef('ql')
+			library('qm', 'org.quiltmc', 'quilt-mappings').versionRef('qm')
+			library('qsl', 'org.quiltmc', 'qsl').versionRef('qsl')
+
+			// Functionality
+			version('styledNicknames', "1.1.2+${mc_major}")
+			version('placeholder', "2.0.0-beta.7+${mc_major}")
+			version('playerData', "0.2.2+${mc}")
+
+			library('styledNicknames', 'maven.modrinth', 'styled-nicknames').versionRef('styledNicknames')
+			library('placeholder', 'eu.pb4', 'placeholder-api').versionRef('placeholder')
+			library('playerData', 'eu.pb4', 'player-data-api').versionRef('playerData')
+		}
+	}
+}
