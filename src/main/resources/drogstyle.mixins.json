@@ -4,7 +4,8 @@
   "package": "folk.sisby.drogstyle.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
-    "PlayerEntityMixin"
+    "PlayerEntityMixin",
+    "styled_nicknames.CommandsMixin"
   ],
   "client": [
   ],
