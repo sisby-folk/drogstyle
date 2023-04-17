@@ -12,6 +12,7 @@ import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import org.quiltmc.qsl.command.api.CommandRegistrationCallback;
 
@@ -27,7 +28,7 @@ public class DrogstyleCommands implements CommandRegistrationCallback {
 						.executes((c) -> {
 							Text oldDn = c.getSource().getPlayer().getDisplayName();
 							String newDn = c.getArgument("nick", String.class).replace("§", "");
-							((DrogtorPlayer) c.getSource().getPlayer()).drogtor$setNickname(newDn);
+							((DrogtorPlayer) c.getSource().getPlayer( )).drogtor$setNickname(newDn);
 							informDisplayName(c.getSource().getPlayer(), oldDn);
 							return 1;
 						}))
@@ -38,10 +39,10 @@ public class DrogstyleCommands implements CommandRegistrationCallback {
 					return 1;
 				}));
 		dispatcher.register(LiteralArgumentBuilder.<ServerCommandSource>literal("color")
-				.then(RequiredArgumentBuilder.<ServerCommandSource, Formatting>argument("color", ColorArgumentType.color())
+				.then(RequiredArgumentBuilder.<ServerCommandSource, TextColor>argument("color", TextColorArgumentType.color())
+						.suggests(ColorArgumentType.color()::listSuggestions)
 						.executes((c) -> {
-							Formatting f = c.getArgument("color", Formatting.class);
-							((DrogtorPlayer) c.getSource().getPlayer()).drogtor$setNameColor(f);
+							((DrogstylePlayer) c.getSource().getPlayer()).drogstyle$setNameColor(TextColorArgumentType.getColor(c, "color"));
 							informDisplayName(c.getSource().getPlayer(), null);
 							return 1;
 						}))
@@ -75,8 +76,10 @@ public class DrogstyleCommands implements CommandRegistrationCallback {
 	}
 
 	private void informDisplayName(ServerPlayerEntity player, Text oldDn) {
-		player.sendMessage(Text.translatable("commands.drogstyle.nick.success", player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))).setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName()), false);
-		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn + "' -> '" + player.getDisplayName() + "' [" + player.getGameProfile().getName() + "]");
+		player.sendMessage(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))), false);
+		if (oldDn != null) {
+			Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
+		}
 	}
 
 	private void informBio(ServerPlayerEntity player) {

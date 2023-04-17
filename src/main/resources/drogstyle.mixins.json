@@ -5,7 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "mixins": [
     "PlayerEntityMixin",
-    "styled_nicknames.CommandsMixin"
+    "styled_nicknames.CommandsMixin",
+    "styled_nicknames.ConfigManagerMixin"
   ],
   "client": [
   ],
