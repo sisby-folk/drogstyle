@@ -79,6 +79,8 @@ public class DrogstyleCommands implements CommandRegistrationCallback {
 		player.sendMessage(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))), false);
 		if (oldDn != null) {
 			Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
+		} else {
+			player.sendMessage(Text.literal("Your display name has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), false);
 		}
 	}
 
@@ -86,6 +88,8 @@ public class DrogstyleCommands implements CommandRegistrationCallback {
 		String bio = ((DrogtorPlayer)player).drogtor$getBio();
 		if (bio != null) {
 			player.sendMessage(Text.literal("Your bio is now:\n").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(bio), false);
+		} else {
+			player.sendMessage(Text.literal("Your bio has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)), false);
 		}
 	}
 }
