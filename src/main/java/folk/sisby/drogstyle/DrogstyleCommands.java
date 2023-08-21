@@ -23,30 +23,32 @@ public class DrogstyleCommands {
 	private static final Pattern ESCAPE_PATTERN = Pattern.compile("\\\\.");
 
 	private static int setNick(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String nick, Consumer<Text> feedback) {
-		Drogstyle.LOGGER.info("Hello from before the command is run!");
 		Text oldDn = player.getDisplayName();
 		if (nick != null && !nick.isEmpty()) {
 			String newDn = nick.replace("§", "");
 			drogstylePlayer.drogtor$setNickname(newDn);
+			feedback.accept(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))));
 		} else {
 			drogstylePlayer.drogtor$setNickname(null);
+			feedback.accept(Text.literal("Your display name has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
 		}
-		Drogstyle.LOGGER.info("Hello from after the command is run!");
-		informDisplayName(player, drogstylePlayer, oldDn, feedback);
+		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
 		return 1;
 	}
 
 	private static int setColor(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String colorString, Consumer<Text> feedback) {
-		TextColor color = null;
 		if (colorString != null) {
-			color = TextColor.parse(colorString);
+			TextColor color = TextColor.parse(colorString);
 			if (color == null) {
 				feedback.accept(Text.literal("Invalid color! must be a color name or # followed by a 6-digit hex code.").setStyle(Style.EMPTY.withColor(Formatting.RED)));
 				return -1;
 			}
+			drogstylePlayer.drogstyle$setNameColor(color);
+			feedback.accept(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))));
+		} else {
+			drogstylePlayer.drogstyle$setNameColor(null);
+			feedback.accept(Text.literal("Your color has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
 		}
-		drogstylePlayer.drogstyle$setNameColor(color);
-		informColor(player, drogstylePlayer, feedback);
 		return 1;
 	}
 
@@ -61,42 +63,13 @@ public class DrogstyleCommands {
 				}
 				return s;
 			});
-		}
-		drogstylePlayer.drogtor$setBio(bio);
-		informBio(player, drogstylePlayer, feedback);
-		return 1;
-	}
-
-	private static void informDisplayName(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, Text oldDn, Consumer<Text> feedback) {
-		Drogstyle.LOGGER.info("Hello from before where the messages should be sent!");
-		if (drogstylePlayer.drogtor$isActive()) {
-			Drogstyle.LOGGER.info("Hello from after checking active!");
-			feedback.accept(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))));
-		} else {
-			feedback.accept(Text.literal("Your display name has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
-		}
-
-		if (oldDn != null) {
-			Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
-		}
-		Drogstyle.LOGGER.info("Hello from after where the messages should be sent!");
-	}
-
-	private static void informColor(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, Consumer<Text> feedback) {
-		if (drogstylePlayer.drogstyle$getNameColor() != null) {
-			feedback.accept(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))));
-		} else {
-			feedback.accept(Text.literal("Your color has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
-		}
-	}
-
-	private static void informBio(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, Consumer<Text> feedback) {
-		String bio = drogstylePlayer.drogtor$getBio();
-		if (bio != null) {
+			drogstylePlayer.drogtor$setBio(bio);
 			feedback.accept(Text.literal("Your bio is now:\n").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(bio));
 		} else {
+			drogstylePlayer.drogtor$setBio(null);
 			feedback.accept(Text.literal("Your bio has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
 		}
+		return 1;
 	}
 
 	public interface DrogstyleCommandExecutor {
