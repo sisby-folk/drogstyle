@@ -1,0 +1,38 @@
+{
+  "schemaVersion": 1,
+  "id": "drogstyle",
+  "version": "${version}",
+  "name": "Drogstyle",
+  "description": "A simplified UX wrapper for styled nicknames",
+  "authors": [
+    "Sisby folk"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/drogstyle",
+    "issues": "https://github.com/sisby-folk/drogstyle/issues",
+    "sources": "https://github.com/sisby-folk/drogstyle"
+  },
+  "icon": "assets/drogstyle/icon.png",
+  "license": "LGPL-3.0-only",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "folk.sisby.drogstyle.Drogstyle"
+    ]
+  },
+  "depends": {
+    "minecraft": ">=${mc}",
+    "fabricloader": ">=0.14.9",
+    "fabric": ">=${fapi}",
+    "styled-nicknames": ">=${styledNicknames}"
+  },
+  "suggests": {
+    "inventorytabs": ">=0.6.1"
+  },
+  "provides": [
+    "drogtor"
+  ],
+  "mixins": [
+    "drogstyle.mixins.json"
+  ]
+}

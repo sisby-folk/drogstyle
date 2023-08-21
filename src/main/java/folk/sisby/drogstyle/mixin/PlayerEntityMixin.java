@@ -19,6 +19,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 	private static final Pattern COLOR_PATTERN = Pattern.compile("<(color:'?|/?)?(yellow|dark_blue|dark_purple|gold|red|aqua|gray|light_purple|white|dark_gray|green|blue|dark_aqua|dark_green|black)'?>|<color:#[0-9a-fA-f]{6}>|</color>", Pattern.CASE_INSENSITIVE);
 	private static final Pattern BIO_PATTERN = Pattern.compile("<hover:'?[^<'>]+'?>|</hover>", Pattern.CASE_INSENSITIVE);
 
+	@SuppressWarnings("DataFlowIssue")
 	private NicknameHolder getHolder() {
 		return (NicknameHolder) ((ServerPlayerEntity) (Object) this).networkHandler;
 	}
@@ -77,7 +78,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 
 	@Override
 	public boolean drogtor$isActive() {
-		return getHolder().sn_get() != null;
+		return getHolder().sn_shouldDisplay();
 	}
 
 	@Override

@@ -6,9 +6,9 @@
 		"version": "${version}",
 		"metadata": {
 			"name": "Drogstyle",
-			"description": "A simplified UX skin for styled nicknames",
+			"description": "A simplified UX wrapper for styled nicknames",
 			"contributors": {
-				"Sisby Folk": "Owner",
+				"Sisby folk": "Co-Authors",
 				"unascribed": "Design & Command Logic"
 			},
 			"contact": {
@@ -20,11 +20,8 @@
 		},
 		"intermediate_mappings": "net.fabricmc:intermediary",
 		"entrypoints": {
-			"init": [
+			"main": [
 				"folk.sisby.drogstyle.Drogstyle"
-			],
-			"events": [
-				"folk.sisby.drogstyle.DrogstyleCommands"
 			]
 		},
 		"depends": [
@@ -37,8 +34,8 @@
 				"versions": ">=${ql}"
 			},
 			{
-				"id": "quilt_base",
-				"versions": ">=${qsl}"
+				"id": "quilted_fabric_api",
+				"versions": ">=${qfapi}"
 			},
 			{
 				"id": "styled-nicknames",
