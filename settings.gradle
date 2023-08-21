@@ -18,7 +18,7 @@ dependencyResolutionManagement {
 		libs {
 			def mc_major = '1.20'
 			def mc = mc_major + '.1'
-			def fapi = '0.87.0'
+			def fapi = '0.86.1'
 
 			// // Build Tools // //
 			version('loom', '1.2.+')
@@ -30,7 +30,7 @@ dependencyResolutionManagement {
 			version('ql', "0.19.0")
 			version('qm', "${mc}+build.23")
 			version('fapi', "${fapi}-${mc}")
-			version('qfapi', "7.1.2+${fapi}-${mc}")
+			version('qfapi', "7.1.1+${fapi}-${mc}")
 
 			library('mc', 'mojang', 'minecraft').versionRef('mc')
 			library('ql', 'org.quiltmc', 'quilt-loader').versionRef('ql')
