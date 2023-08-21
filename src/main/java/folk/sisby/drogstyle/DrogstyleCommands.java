@@ -84,9 +84,9 @@ public class DrogstyleCommands {
 
 		DrogstylePlayer drogstylePlayer = ((DrogstylePlayer) player);
 		try {
-			return executor.execute(player, drogstylePlayer, arg != null ? context.getArgument(arg, String.class) : null, t -> context.getSource().sendFeedback(t, false));
+			return executor.execute(player, drogstylePlayer, arg != null ? context.getArgument(arg, String.class) : null, t -> context.getSource().sendFeedback(() -> t, false));
 		} catch (Exception e) {
-			context.getSource().sendFeedback(Text.literal("Command failed! Check log for details.").setStyle(Style.EMPTY.withColor(Formatting.RED)), false);
+			context.getSource().sendFeedback(() -> Text.literal("Command failed! Check log for details.").setStyle(Style.EMPTY.withColor(Formatting.RED)), false);
 			Drogstyle.LOGGER.error("[Drogstyle] Error while executing command: {}", context.getInput(), e);
 			return 0;
 		}
