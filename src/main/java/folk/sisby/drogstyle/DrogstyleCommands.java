@@ -2,10 +2,10 @@ package folk.sisby.drogstyle;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import eu.pb4.stylednicknames.config.ConfigManager;
 import net.minecraft.command.CommandBuildContext;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;
@@ -95,21 +95,36 @@ public class DrogstyleCommands {
 		}
 	}
 
+	private static int reloadConfig(CommandContext<ServerCommandSource> context) {
+		if (ConfigManager.loadConfig()) {
+			context.getSource().sendFeedback(Text.literal("Reloaded config!"), false);
+		} else {
+			context.getSource().sendError(Text.literal("Error occurred while reloading config!").formatted(Formatting.RED));
+		}
+		return 1;
+	}
+
 	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext buildContext, CommandManager.RegistrationEnvironment environment) {
 		dispatcher.register(
-			LiteralArgumentBuilder.<ServerCommandSource>literal("nick")
+			CommandManager.literal("nick")
 				.then(RequiredArgumentBuilder.<ServerCommandSource, String>argument("nick", StringArgumentType.greedyString())
 					.executes((c) -> execute(c, "nick", DrogstyleCommands::setNick))).executes((c) -> execute(c, null, DrogstyleCommands::setNick)));
 		dispatcher.register(
-			LiteralArgumentBuilder.<ServerCommandSource>literal("color")
+			CommandManager.literal("color")
 				.then(RequiredArgumentBuilder.<ServerCommandSource, String>argument("color", StringArgumentType.greedyString())
 					.suggests((c, s) -> CommandSource.suggestMatching(Formatting.getNames(true, false), s))
 					.executes((c) -> execute(c, "color", DrogstyleCommands::setColor)))
 				.executes((c) -> execute(c, null, DrogstyleCommands::setColor)));
 		dispatcher.register(
-			LiteralArgumentBuilder.<ServerCommandSource>literal("bio")
+			CommandManager.literal("bio")
 				.then(RequiredArgumentBuilder.<ServerCommandSource, String>argument("bio", StringArgumentType.greedyString())
 					.executes((c) -> execute(c, "bio", DrogstyleCommands::setBio)))
 				.executes((c) -> execute(c, null, DrogstyleCommands::setBio)));
+		dispatcher.register(
+			CommandManager.literal("drogstyle")
+				.then(CommandManager.literal("reload")
+					.requires(src -> src.hasPermissionLevel(3))
+					.executes(DrogstyleCommands::reloadConfig))
+		);
 	}
 }
