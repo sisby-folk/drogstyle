@@ -11,7 +11,7 @@ Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href=
 ---
 
 Drogstyle provides a self-assignable display name system with the following commands:
- - `/nick [name]`: set your display name. If needed, also supports [P:API Formatting](https://placeholders.pb4.eu/user/text-format/_) via [styled](https://modrinth.com/mod/styled-nicknames)'s config.
+ - `/nick [name]`: set your display name. If needed, also supports [P:API Formatting](https://placeholders.pb4.eu/user/text-format/) via [styled](https://modrinth.com/mod/styled-nicknames)'s config.
  - `/color [color]`: set your name color. Supports vanilla colors and #hexcodes
  - `/bio [bio]`: set your name bio (tooltip). Supports `\n` for newlines.
 
