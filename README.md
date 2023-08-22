@@ -17,6 +17,8 @@ Drogstyle provides a self-assignable display name system with the following comm
 
 All commands can be called on their own to clear the set value.
 
+To check a player's username for commands, simply click their name in chat - which will autofill `/tell [username]`.
+
 ### Design: Self-Ownership
 
 Drogstyle doesn't support any kind of permissions system, and won't.
