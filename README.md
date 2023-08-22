@@ -1,5 +1,5 @@
 <!--suppress HtmlDeprecatedTag, XmlDeprecatedElement -->
-<center><img alt="screenshot" src="https://cdn.modrinth.com/data/483PZAuC/images/eb49516d01f602d651929bc17abdb88496c208d8.png" /></center>
+<center><img alt="screenshot" src="https://cdn.modrinth.com/data/MAmi6HBa/images/28cd3601f0f474e83693522dbcc4785a409bcf18.png" /></center>
 
 <center>
 A <a href="https://modrinth.com/mod/drogtor">Drogtor</a>-style UX wrapper for Styled Nicknames.<br/>
