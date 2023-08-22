@@ -99,7 +99,7 @@ public class DrogstyleCommands {
 
 	private static int reloadConfig(CommandContext<ServerCommandSource> context) {
 		if (ConfigManager.loadConfig()) {
-			context.getSource().sendFeedback(Text.literal("Reloaded config!"), false);
+			context.getSource().sendFeedback(() -> Text.literal("Reloaded config!"), false);
 		} else {
 			context.getSource().sendError(Text.literal("Error occurred while reloading config!").formatted(Formatting.RED));
 		}
@@ -121,9 +121,9 @@ public class DrogstyleCommands {
 			context.getSource().sendError(Text.translatable("No player with that name is currently online."));
 		} else {
 			if (foundPlayers.size() > 1) {
-				context.getSource().sendFeedback(Text.translatable("Found %s players with that name:", foundPlayers.size()), false);
+				context.getSource().sendFeedback(() -> Text.translatable("Found %s players with that name:", foundPlayers.size()), false);
 			}
-			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(Text.translatable("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(() -> Text.translatable("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
 		}
 		return 0;
 	}
