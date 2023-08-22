@@ -2,7 +2,6 @@ package folk.sisby.drogstyle;
 
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
-import com.mojang.brigadier.builder.RequiredArgumentBuilder;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import eu.pb4.stylednicknames.NicknameHolder;
@@ -31,10 +30,10 @@ public class DrogstyleCommands {
 		if (nick != null && !nick.isEmpty()) {
 			String newDn = nick.replace("§", "");
 			drogstylePlayer.drogtor$setNickname(newDn);
-			feedback.accept(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))));
+			feedback.accept(Text.literal("Your display name is now ").formatted(Formatting.YELLOW).append(player.getDisplayName().copy().formatted(Formatting.WHITE)));
 		} else {
 			drogstylePlayer.drogtor$setNickname(null);
-			feedback.accept(Text.literal("Your display name has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
+			feedback.accept(Text.literal("Your display name has been cleared.").formatted(Formatting.YELLOW));
 		}
 		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
 		return 1;
@@ -44,14 +43,14 @@ public class DrogstyleCommands {
 		if (colorString != null) {
 			TextColor color = TextColor.parse(colorString);
 			if (color == null) {
-				feedback.accept(Text.literal("Invalid color! must be a color name or # followed by a 6-digit hex code.").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+				feedback.accept(Text.literal("Invalid color! must be a color name or # followed by a 6-digit hex code.").formatted(Formatting.RED));
 				return -1;
 			}
 			drogstylePlayer.drogstyle$setNameColor(color);
-			feedback.accept(Text.literal("Your display name is now ").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(player.getDisplayName().copy().setStyle(Style.EMPTY.withColor(Formatting.WHITE))));
+			feedback.accept(Text.literal("Your display name is now ").formatted(Formatting.YELLOW).append(player.getDisplayName().copy().formatted(Formatting.WHITE)));
 		} else {
 			drogstylePlayer.drogstyle$setNameColor(null);
-			feedback.accept(Text.literal("Your color has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
+			feedback.accept(Text.literal("Your color has been cleared.").formatted(Formatting.YELLOW));
 		}
 		return 1;
 	}
@@ -68,10 +67,10 @@ public class DrogstyleCommands {
 				return s;
 			});
 			drogstylePlayer.drogtor$setBio(bio);
-			feedback.accept(Text.literal("Your bio is now:\n").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)).append(bio));
+			feedback.accept(Text.literal("Your bio is now:\n").formatted(Formatting.YELLOW).append(bio));
 		} else {
 			drogstylePlayer.drogtor$setBio(null);
-			feedback.accept(Text.literal("Your bio has been cleared.").setStyle(Style.EMPTY.withColor(Formatting.YELLOW)));
+			feedback.accept(Text.literal("Your bio has been cleared.").formatted(Formatting.YELLOW));
 		}
 		return 1;
 	}
@@ -91,7 +90,7 @@ public class DrogstyleCommands {
 		try {
 			return executor.execute(player, drogstylePlayer, arg != null ? context.getArgument(arg, String.class) : null, t -> context.getSource().sendFeedback(t, false));
 		} catch (Exception e) {
-			context.getSource().sendFeedback(Text.literal("Command failed! Check log for details.").setStyle(Style.EMPTY.withColor(Formatting.RED)), false);
+			context.getSource().sendFeedback(Text.literal("Command failed! Check log for details.").formatted(Formatting.RED), false);
 			Drogstyle.LOGGER.error("[Drogstyle] Error while executing command: {}", context.getInput(), e);
 			return 0;
 		}
@@ -142,17 +141,17 @@ public class DrogstyleCommands {
 	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext buildContext, CommandManager.RegistrationEnvironment environment) {
 		dispatcher.register(
 			CommandManager.literal("nick")
-				.then(RequiredArgumentBuilder.<ServerCommandSource, String>argument("nick", StringArgumentType.greedyString())
+				.then(CommandManager.argument("nick", StringArgumentType.greedyString())
 					.executes((c) -> execute(c, "nick", DrogstyleCommands::setNick))).executes((c) -> execute(c, null, DrogstyleCommands::setNick)));
 		dispatcher.register(
 			CommandManager.literal("color")
-				.then(RequiredArgumentBuilder.<ServerCommandSource, String>argument("color", StringArgumentType.greedyString())
+				.then(CommandManager.argument("color", StringArgumentType.greedyString())
 					.suggests((c, s) -> CommandSource.suggestMatching(Formatting.getNames(true, false), s))
 					.executes((c) -> execute(c, "color", DrogstyleCommands::setColor)))
 				.executes((c) -> execute(c, null, DrogstyleCommands::setColor)));
 		dispatcher.register(
 			CommandManager.literal("bio")
-				.then(RequiredArgumentBuilder.<ServerCommandSource, String>argument("bio", StringArgumentType.greedyString())
+				.then(CommandManager.argument("bio", StringArgumentType.greedyString())
 					.executes((c) -> execute(c, "bio", DrogstyleCommands::setBio)))
 				.executes((c) -> execute(c, null, DrogstyleCommands::setBio)));
 		dispatcher.register(
