@@ -21,9 +21,9 @@ To check a player's username for commands, simply click their name in chat - whi
 
 ### Design: Self-Ownership
 
-Drogstyle doesn't support any kind of permissions system, and won't.<br/>
-It deliberately breaks the basic permissions in styled nicknames using a [mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java).<br/>
-Drogtor also doesn't provide a method for operators to set or clear other players' nicknames, and won't.
+None of the above commands support any kind of permissions system, and won't.<br/>
+Drogstyle deliberately breaks the basic permissions in styled nicknames using a [mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java).<br/>
+Drogstyle also doesn't provide a method for operators to set or clear other players' nicknames, and won't.
 
 #### Ranting Into The Void - Even More Design Notes:
 
