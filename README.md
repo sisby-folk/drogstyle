@@ -20,11 +20,11 @@ All commands can be called on their own to clear the set value.
 ### Design: Self-Ownership
 
 Drogstyle doesn't support any kind of permissions system, and won't.
-Actually, It deliberately breaks the one in styled nicknames using [a mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java). Drogtor also doesn't allow server operators to set or clear other players' nicknames, and won't.
+Actually, it deliberately breaks the one in styled nicknames using [a mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java). Drogtor also doesn't allow server operators to set or clear other players' nicknames, and won't.
 
 #### Ranting Into The Void - Even More Design Notes:
 
-Drogtor's is designed around _"assuming you trust your players"_ - intended for things like invite-only servers.<br/>
+Drogtor is designed around _"assuming you trust your players"_ - intended for things like invite-only servers.<br/>
 Drogstyle is designed around expanding this idea to public servers - by treating name-setting as an inalienable right for self-expression.<br/> That means if someone won't stop abusing the nickname system on your server, drogstyle prefers you ban them, rather than being allowed to touch their name.
 
 
@@ -34,7 +34,7 @@ Drogstyle is designed around expanding this idea to public servers - by treating
 
 All mods are built on the work of many others.
 
-This mod is very specifically a drogtor-flavoured facade with functionality _entirely_ provided by Styled Nicknames - please support the full mod! (and don't pester them with drogstyle issues)
+This mod is very specifically a drogtor-flavoured facade with functionality _entirely_ provided by Styled Nicknames - please support the full mod! (and don't pester them with drogstyle issues).
 
 This mod is included in [Tinkerer's Quilt](https://modrinth.com/modpack/tinkerers-quilt) - our modpack about rediscovering vanilla.
 
