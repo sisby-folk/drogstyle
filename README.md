@@ -11,7 +11,7 @@ Requires <a href="https://modrinth.com/mod/connector">Connector</a> and <a href=
 ---
 
 Drogstyle provides a self-assignable display name system with the following commands:
- - `/nick [name]`: set your display name. Supports [P:API Text Format](https://placeholders.pb4.eu/user/text-format/_) if needed.
+ - `/nick [name]`: set your display name. If needed, also supports [P:API Text Format](https://placeholders.pb4.eu/user/text-format/_) using the [styled-nicknames](https://modrinth.com/mod/styled-nicknames) config.
  - `/color [color]`: set your name color. Supports vanilla colors and #hexcodes
  - `/bio [bio]`: set your name bio (tooltip). Supports `\n` for newlines.
 
@@ -22,7 +22,7 @@ To check a player's username for commands, simply click their name in chat - whi
 ### Design: Self-Ownership
 
 Drogstyle doesn't support any kind of permissions system, and won't.
-Actually, it deliberately breaks the one in styled nicknames using [a mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java). Drogtor also doesn't allow server operators to set or clear other players' nicknames, and won't.
+Actually, it deliberately breaks the basic permissions in styled nicknames using [a mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java). Drogtor also doesn't allow server operators to set or clear other players' nicknames, and won't.
 
 #### Ranting Into The Void - Even More Design Notes:
 
