@@ -39,8 +39,8 @@ dependencyResolutionManagement {
 
 			// Functionality
 			version('styledNicknames', "1.1.2+${mc_major}")
-			version('placeholder', "2.0.0-beta.7+${mc_major}")
-			version('playerData', "0.2.2+${mc}")
+			version('placeholder', "2.0.0-beta.3+${mc_major}")
+			version('playerData', "0.1.0+1.18")
 
 			library('styledNicknames', 'maven.modrinth', 'styled-nicknames').versionRef('styledNicknames')
 			library('placeholder', 'eu.pb4', 'placeholder-api').versionRef('placeholder')
