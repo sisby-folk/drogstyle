@@ -17,23 +17,23 @@ Drogstyle provides a self-assignable display name system with the following comm
 
 All commands can be called on their own to clear the set value.
 
-To check a player's username for commands, simply click their name in chat - which will autofill `/tell [username]`.
-
 ### Design: Self-Ownership
 
-None of the above commands support any kind of permissions system, and won't.<br/>
-Drogstyle deliberately breaks the basic permissions in styled nicknames using a [mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java).<br/>
-Drogstyle also doesn't provide a method for operators to set or clear other players' names, and won't.
+None of the above commands offer any kind of permissions system, and won't.<br/>
+Drogstyle force-allows self-assignment permissions in styled nicknames using a [mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java).<br/>
+No method is provided for operators to set or clear other players' names.
 
 #### Ranting Into The Void - Even More Design Notes:
 
 Drogtor is designed around _"assuming you trust your players"_ - intended for things like invite-only servers.<br/>
-Drogstyle is designed around expanding this idea to public servers - by treating name-setting as an inalienable right for self-expression.<br/> That means if someone won't stop abusing the name system on your server, drogstyle prefers you ban them, rather than being allowed to touch their name.
+Drogstyle expands on this by treating names as an inalienable right for self-expression, even on public servers.<br/> That means drogstyle prefers you a ban a player who won't stop abusing the mod, rather than touching their name.
 
-### Util Commands
+### Utility Commands
 
- - `/drogstyle reload` - reloads the styled nicknames configuration.
- - `/drogstyle username` - look up usernames by display name (for mods that show display names outside of chat.)
+Player usernames can also be checked via hovering over name formatting (e.g. `#`), or clicking.
+
+- `/drogstyle username [name]` - looks up a player's username (for mods that show display names outside of chat.)
+- `/drogstyle reload` - reloads the styled nicknames configuration.
 
 ---
 
