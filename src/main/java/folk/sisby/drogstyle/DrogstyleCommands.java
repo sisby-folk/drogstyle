@@ -4,18 +4,23 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.suggestion.SuggestionProvider;
+import eu.pb4.stylednicknames.NicknameHolder;
 import eu.pb4.stylednicknames.config.ConfigManager;
 import net.minecraft.command.CommandBuildContext;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
+import java.util.*;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public class DrogstyleCommands {
 	private static final Pattern ESCAPE_PATTERN = Pattern.compile("\\\\.");
@@ -102,6 +107,38 @@ public class DrogstyleCommands {
 		return 1;
 	}
 
+	private static int username(CommandContext<ServerCommandSource> context) {
+		String nickname = StringArgumentType.getString(context, "nickname");
+		List<ServerPlayerEntity> players = context.getSource().getServer().getPlayerManager().getPlayerList();
+		Map<ServerPlayerEntity, MutableText> foundPlayers = new HashMap<>();
+		for (ServerPlayerEntity player : players) {
+			MutableText output = NicknameHolder.of(player).sn_getOutput();
+			if (output == null) continue;
+			if (output.getString().equals(nickname)) {
+				foundPlayers.put(player, output);
+			}
+		}
+		if (foundPlayers.isEmpty()) {
+			context.getSource().sendError(Text.translatable("No player with that name is currently online."));
+		} else {
+			if (foundPlayers.size() > 1) {
+				context.getSource().sendFeedback(Text.translatable("Found %s players with that name:", foundPlayers.size()), false);
+			}
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(Text.translatable("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
+		}
+		return 0;
+	}
+
+	private static final SuggestionProvider<ServerCommandSource> NICKNAME_PROVIDER = (source, builder) -> {
+		List<ServerPlayerEntity> players = source.getSource().getServer().getPlayerManager().getPlayerList();
+		Set<String> nicknames = players.stream()
+			.map(player -> NicknameHolder.of(player).sn_getOutput())
+			.filter(Objects::nonNull)
+			.map(Text::getString)
+			.collect(Collectors.toSet());
+		return CommandSource.suggestMatching(nicknames, builder);
+	};
+
 	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext buildContext, CommandManager.RegistrationEnvironment environment) {
 		dispatcher.register(
 			CommandManager.literal("nick")
@@ -120,6 +157,10 @@ public class DrogstyleCommands {
 				.executes((c) -> execute(c, null, DrogstyleCommands::setBio)));
 		dispatcher.register(
 			CommandManager.literal("drogstyle")
+				.then(CommandManager.literal("username")
+					.then(CommandManager.argument("nickname", StringArgumentType.greedyString()).suggests(NICKNAME_PROVIDER)
+						.executes(DrogstyleCommands::username)
+					))
 				.then(CommandManager.literal("reload")
 					.requires(src -> src.hasPermissionLevel(3))
 					.executes(DrogstyleCommands::reloadConfig))
