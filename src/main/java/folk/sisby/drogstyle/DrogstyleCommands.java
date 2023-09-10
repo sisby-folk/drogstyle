@@ -156,16 +156,11 @@ public class DrogstyleCommands {
 				.executes((c) -> execute(c, null, DrogstyleCommands::setBio)));
 		dispatcher.register(
 			CommandManager.literal("drogstyle")
-				.then(CommandManager.literal("reload")
-					.requires(src -> src.hasPermissionLevel(3))
-					.executes(DrogstyleCommands::reloadConfig))
-		);
-		dispatcher.register(
-			CommandManager.literal("drogstyle")
 				.then(CommandManager.literal("username")
 					.then(CommandManager.argument("nickname", StringArgumentType.greedyString()).suggests(NICKNAME_PROVIDER)
 						.executes(DrogstyleCommands::username)
-					)
+					))
+				.then(CommandManager.literal("reload")
 					.requires(src -> src.hasPermissionLevel(3))
 					.executes(DrogstyleCommands::reloadConfig))
 		);
