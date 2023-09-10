@@ -33,7 +33,7 @@ Drogstyle is designed around expanding this idea to public servers - by treating
 ### Util Commands
 
  - `/drogstyle reload` - reloads the styled nicknames configuration.
- - `/drogstyle username` - lookup usernames by display name (for mods that show display names outside of chat.)
+ - `/drogstyle username` - look up usernames by display name (for mods that show display names outside of chat.)
 
 ---
 
