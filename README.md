@@ -21,14 +21,19 @@ To check a player's username for commands, simply click their name in chat - whi
 
 ### Design: Self-Ownership
 
-Drogstyle doesn't support any kind of permissions system, and won't.
-Actually, it deliberately breaks the basic permissions in styled nicknames using [a mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java). Drogtor also doesn't allow server operators to set or clear other players' nicknames, and won't.
+None of the above commands support any kind of permissions system, and won't.<br/>
+Drogstyle deliberately breaks the basic permissions in styled nicknames using a [mixin](https://github.com/sisby-folk/drogstyle/blob/1.19/src/main/java/folk/sisby/drogstyle/mixin/styled_nicknames/ConfigManagerMixin.java).<br/>
+Drogstyle also doesn't provide a method for operators to set or clear other players' names, and won't.
 
 #### Ranting Into The Void - Even More Design Notes:
 
 Drogtor is designed around _"assuming you trust your players"_ - intended for things like invite-only servers.<br/>
-Drogstyle is designed around expanding this idea to public servers - by treating name-setting as an inalienable right for self-expression.<br/> That means if someone won't stop abusing the nickname system on your server, drogstyle prefers you ban them, rather than being allowed to touch their name.
+Drogstyle is designed around expanding this idea to public servers - by treating name-setting as an inalienable right for self-expression.<br/> That means if someone won't stop abusing the name system on your server, drogstyle prefers you ban them, rather than being allowed to touch their name.
 
+### Util Commands
+
+ - `/drogstyle reload` - reloads the styled nicknames configuration.
+ - `/drogstyle username` - look up usernames by display name (for mods that show display names outside of chat.)
 
 ---
 
