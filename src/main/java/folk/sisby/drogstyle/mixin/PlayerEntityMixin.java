@@ -10,17 +10,33 @@ import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Mixin(value = PlayerEntity.class, priority = 1001)
 public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
-	private static final Pattern COLOR_PATTERN = Pattern.compile("<(color:'?|/?)?(yellow|dark_blue|dark_purple|gold|red|aqua|gray|light_purple|white|dark_gray|green|blue|dark_aqua|dark_green|black)'?>|<color:#[0-9a-fA-f]{6}>|</color>", Pattern.CASE_INSENSITIVE);
-	private static final Pattern BIO_PATTERN = Pattern.compile("<hover:'?[^<'>]+'?>|</hover>", Pattern.CASE_INSENSITIVE);
+	@Unique private static final Pattern COLOR_PATTERN = Pattern.compile("(<(color:'?|/?)?(yellow|dark_blue|dark_purple|gold|red|aqua|gray|light_purple|white|dark_gray|green|blue|dark_aqua|dark_green|black)'?>|<color:#[0-9a-fA-f]{6}>|</color>)", Pattern.CASE_INSENSITIVE);
+	@Unique private static final Pattern BIO_PATTERN = Pattern.compile("(<hover:'?[^<'>]+'?>)|</hover>", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public void drogtor$setNickname(@Nullable String nickname) {
-		NicknameHolder.of(this).styledNicknames$set(nickname, true);
+		String newName = nickname;
+		if (nickname != null) {
+			String oldName = NicknameHolder.of(this).styledNicknames$get();
+			if (oldName != null) {
+				Matcher oldColor = COLOR_PATTERN.matcher(oldName);
+				if (oldColor.find() && oldColor.group(1) != null && !oldColor.group(1).contains("/")) {
+					newName = oldColor.group(1) + newName;
+				}
+				Matcher oldBio = BIO_PATTERN.matcher(oldName);
+				if (oldBio.find() && oldBio.group(1) != null && !oldBio.group(1).contains("/")) {
+					newName = oldBio.group(1) + newName;
+				}
+			}
+		}
+		NicknameHolder.of(this).styledNicknames$set(newName, true);
 	}
 
 	@Override
