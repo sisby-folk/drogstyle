@@ -24,7 +24,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 	public void drogtor$setNickname(@Nullable String nickname) {
 		String newName = nickname;
 		if (nickname != null) {
-			String oldName = NicknameHolder.of(this).sn_get();
+			String oldName = NicknameHolder.of(this).styledNicknames$get();
 			if (oldName != null) {
 				Matcher oldColor = COLOR_PATTERN.matcher(oldName);
 				if (oldColor.find() && oldColor.group(1) != null && !oldColor.group(1).contains("/")) {
