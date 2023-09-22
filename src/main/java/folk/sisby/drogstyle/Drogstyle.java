@@ -3,7 +3,7 @@ package folk.sisby.drogstyle;
 import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.fabricmc.fabric.api.command.v1.CommandRegistrationCallback;
 
 @SuppressWarnings("deprecation")
 public class Drogstyle implements ModInitializer {

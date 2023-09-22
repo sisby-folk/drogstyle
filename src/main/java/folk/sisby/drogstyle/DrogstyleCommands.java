@@ -7,14 +7,11 @@ import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import eu.pb4.stylednicknames.NicknameHolder;
 import eu.pb4.stylednicknames.config.ConfigManager;
-import net.minecraft.command.CommandBuildContext;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
+import net.minecraft.text.*;
 import net.minecraft.util.Formatting;
 
 import java.util.*;
@@ -30,10 +27,10 @@ public class DrogstyleCommands {
 		if (nick != null && !nick.isEmpty()) {
 			String newDn = nick.replace("§", "");
 			drogstylePlayer.drogtor$setNickname(newDn);
-			feedback.accept(Text.literal("Your display name is now ").formatted(Formatting.YELLOW).append(player.getDisplayName().copy().formatted(Formatting.WHITE)));
+			feedback.accept(new LiteralText("Your display name is now ").formatted(Formatting.YELLOW).append(new LiteralText("").append(player.getDisplayName()).formatted(Formatting.WHITE)));
 		} else {
 			drogstylePlayer.drogtor$setNickname(null);
-			feedback.accept(Text.literal("Your display name has been cleared.").formatted(Formatting.YELLOW));
+			feedback.accept(new LiteralText("Your display name has been cleared.").formatted(Formatting.YELLOW));
 		}
 		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
 		return 1;
@@ -43,14 +40,14 @@ public class DrogstyleCommands {
 		if (colorString != null) {
 			TextColor color = TextColor.parse(colorString);
 			if (color == null) {
-				feedback.accept(Text.literal("Invalid color! must be a color name or # followed by a 6-digit hex code.").formatted(Formatting.RED));
+				feedback.accept(new LiteralText("Invalid color! must be a color name or # followed by a 6-digit hex code.").formatted(Formatting.RED));
 				return -1;
 			}
 			drogstylePlayer.drogstyle$setNameColor(color);
-			feedback.accept(Text.literal("Your display name is now ").formatted(Formatting.YELLOW).append(player.getDisplayName().copy().formatted(Formatting.WHITE)));
+			feedback.accept(new LiteralText("Your display name is now ").formatted(Formatting.YELLOW).append(new LiteralText("").append(player.getDisplayName()).formatted(Formatting.WHITE)));
 		} else {
 			drogstylePlayer.drogstyle$setNameColor(null);
-			feedback.accept(Text.literal("Your color has been cleared.").formatted(Formatting.YELLOW));
+			feedback.accept(new LiteralText("Your color has been cleared.").formatted(Formatting.YELLOW));
 		}
 		return 1;
 	}
@@ -67,10 +64,10 @@ public class DrogstyleCommands {
 				return s;
 			});
 			drogstylePlayer.drogtor$setBio(bio);
-			feedback.accept(Text.literal("Your bio is now:\n").formatted(Formatting.YELLOW).append(bio));
+			feedback.accept(new LiteralText("Your bio is now:\n").formatted(Formatting.YELLOW).append(bio));
 		} else {
 			drogstylePlayer.drogtor$setBio(null);
-			feedback.accept(Text.literal("Your bio has been cleared.").formatted(Formatting.YELLOW));
+			feedback.accept(new LiteralText("Your bio has been cleared.").formatted(Formatting.YELLOW));
 		}
 		return 1;
 	}
@@ -92,7 +89,7 @@ public class DrogstyleCommands {
 		try {
 			return executor.execute(player, drogstylePlayer, arg != null ? context.getArgument(arg, String.class) : null, t -> context.getSource().sendFeedback(t, false));
 		} catch (Exception e) {
-			context.getSource().sendFeedback(Text.literal("Command failed! Check log for details.").formatted(Formatting.RED), false);
+			context.getSource().sendFeedback(new LiteralText("Command failed! Check log for details.").formatted(Formatting.RED), false);
 			Drogstyle.LOGGER.error("[Drogstyle] Error while executing command: {}", context.getInput(), e);
 			return 0;
 		}
@@ -100,9 +97,9 @@ public class DrogstyleCommands {
 
 	private static int reloadConfig(CommandContext<ServerCommandSource> context) {
 		if (ConfigManager.loadConfig()) {
-			context.getSource().sendFeedback(Text.literal("Reloaded config!"), false);
+			context.getSource().sendFeedback(new LiteralText("Reloaded config!"), false);
 		} else {
-			context.getSource().sendError(Text.literal("Error occurred while reloading config!").formatted(Formatting.RED));
+			context.getSource().sendError(new LiteralText("Error occurred while reloading config!").formatted(Formatting.RED));
 		}
 		return 1;
 	}
@@ -119,12 +116,12 @@ public class DrogstyleCommands {
 			}
 		}
 		if (foundPlayers.isEmpty()) {
-			context.getSource().sendError(Text.translatable("No player with that name is currently online."));
+			context.getSource().sendError(new TranslatableText("No player with that name is currently online."));
 		} else {
 			if (foundPlayers.size() > 1) {
-				context.getSource().sendFeedback(Text.translatable("Found %s players with that name:", foundPlayers.size()), false);
+				context.getSource().sendFeedback(new TranslatableText("Found %s players with that name:", foundPlayers.size()), false);
 			}
-			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(Text.translatable("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(new TranslatableText("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
 		}
 		return 0;
 	}
@@ -139,7 +136,7 @@ public class DrogstyleCommands {
 		return CommandSource.suggestMatching(nicknames, builder);
 	};
 
-	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext buildContext, CommandManager.RegistrationEnvironment environment) {
+	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, boolean dedicated) {
 		dispatcher.register(
 			CommandManager.literal("nick")
 				.then(CommandManager.argument("nick", StringArgumentType.greedyString())
