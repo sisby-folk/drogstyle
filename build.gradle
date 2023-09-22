@@ -102,8 +102,8 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		versionName = baseVersion
 		versionType = 'release'
 		uploadFile = remapJar
-		gameVersions = [libs.versions.mc.get(), '1.19.4']
-		loaders = ['quilt', 'fabric']
+		gameVersions = [libs.versions.mc.get(), '1.20.1']
+		loaders = ['quilt', 'fabric', 'forge']
 		detectLoaders = false
 		dependencies {
 			required.project "styled-nicknames"
