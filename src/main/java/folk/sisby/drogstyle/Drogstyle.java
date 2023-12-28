@@ -5,7 +5,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 
-@SuppressWarnings("deprecation")
 public class Drogstyle implements ModInitializer {
 	public static final String ID = "drogstyle";
 	public static final Logger LOGGER = LoggerFactory.getLogger(ID);
