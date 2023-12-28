@@ -3,10 +3,11 @@ package folk.sisby.drogstyle;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
+import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 import eu.pb4.stylednicknames.NicknameHolder;
 import eu.pb4.stylednicknames.config.ConfigManager;
-import net.minecraft.command.CommandBuildContext;
+import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.CommandSource;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -79,8 +80,10 @@ public class DrogstyleCommands {
 	}
 
 	public static int execute(CommandContext<ServerCommandSource> context, String arg, DrogstyleCommandExecutor executor) {
-		ServerPlayerEntity player = context.getSource().getPlayer();
-		if (player == null) {
+		ServerPlayerEntity player;
+		try {
+			player = context.getSource().getPlayerOrThrow();
+		} catch (CommandSyntaxException e) {
 			Drogstyle.LOGGER.error("[Drogstyle] Commands cannot be invoked by a non-player");
 			return 0;
 		}
@@ -116,12 +119,12 @@ public class DrogstyleCommands {
 			}
 		}
 		if (foundPlayers.isEmpty()) {
-			context.getSource().sendError(Text.translatable("No player with that name is currently online."));
+			context.getSource().sendError(Text.literal("No player with that name is currently online."));
 		} else {
 			if (foundPlayers.size() > 1) {
-				context.getSource().sendFeedback(Text.translatable("Found %s players with that name:", foundPlayers.size()), false);
+				context.getSource().sendFeedback(Text.literal("Found %s players with that name:".formatted(foundPlayers.size())), false);
 			}
-			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(Text.translatable("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(Text.literal("The username of %s is %s.".formatted(serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName())), false));
 		}
 		return 0;
 	}
@@ -136,8 +139,7 @@ public class DrogstyleCommands {
 		return CommandSource.suggestMatching(nicknames, builder);
 	};
 
-
-	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandBuildContext buildContext, CommandManager.RegistrationEnvironment environment) {
+	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
 		dispatcher.register(
 			CommandManager.literal("nick")
 				.then(CommandManager.argument("nick", StringArgumentType.greedyString())

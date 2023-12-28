@@ -39,9 +39,9 @@ repositories {
 dependencies {
 	// // Base // //
 	minecraft libs.mc
-	mappings variantOf(libs.qm) { classifier "intermediary-v2" }
-	modImplementation libs.ql
-	modImplementation libs.qfapi
+	mappings libs.yarn
+	modImplementation libs.fl
+	modImplementation libs.fapi
 
 	modImplementation libs.styledNicknames
 	modImplementation libs.playerData
@@ -52,9 +52,8 @@ processResources {
 	final Map<String, String> map = [
 		"version"        : version.toString(),
 		"mc"             : libs.versions.mc.get(),
-		"ql"             : libs.versions.ql.get(),
+		"fl"             : libs.versions.fl.get(),
 		"fapi"           : libs.versions.fapi.get(),
-		"qfapi"          : libs.versions.qfapi.get(),
 		"styledNicknames": libs.versions.styledNicknames.get()
 	]
 
