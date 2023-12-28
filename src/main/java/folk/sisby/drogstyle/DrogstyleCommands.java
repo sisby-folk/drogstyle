@@ -116,12 +116,12 @@ public class DrogstyleCommands {
 			}
 		}
 		if (foundPlayers.isEmpty()) {
-			context.getSource().sendError(new TranslatableText("No player with that name is currently online."));
+			context.getSource().sendError(new LiteralText("No player with that name is currently online."));
 		} else {
 			if (foundPlayers.size() > 1) {
-				context.getSource().sendFeedback(new TranslatableText("Found %s players with that name:", foundPlayers.size()), false);
+				context.getSource().sendFeedback(new LiteralText("Found %s players with that name:".formatted(foundPlayers.size())), false);
 			}
-			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(new TranslatableText("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(new LiteralText("The username of %s is %s.".formatted(serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName())), false));
 		}
 		return 0;
 	}
