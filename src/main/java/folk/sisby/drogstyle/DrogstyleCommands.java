@@ -5,6 +5,8 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
+import com.mojang.datafixers.util.Either;
+import com.mojang.serialization.DataResult;
 import eu.pb4.stylednicknames.NicknameHolder;
 import eu.pb4.stylednicknames.config.ConfigManager;
 import net.minecraft.command.CommandRegistryAccess;
@@ -41,12 +43,12 @@ public class DrogstyleCommands {
 
 	private static int setColor(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String colorString, Consumer<Text> feedback) {
 		if (colorString != null) {
-			TextColor color = TextColor.parse(colorString);
-			if (color == null) {
+			Either<TextColor, DataResult.PartialResult<TextColor>> color = TextColor.parse(colorString).get();
+			if (color.right().isPresent()) {
 				feedback.accept(Text.literal("Invalid color! must be a color name or # followed by a 6-digit hex code.").formatted(Formatting.RED));
 				return -1;
 			}
-			drogstylePlayer.drogstyle$setNameColor(color);
+			drogstylePlayer.drogstyle$setNameColor(color.left().get());
 			feedback.accept(Text.literal("Your display name is now ").formatted(Formatting.YELLOW).append(player.getDisplayName().copy().formatted(Formatting.WHITE)));
 		} else {
 			drogstylePlayer.drogstyle$setNameColor(null);
@@ -112,7 +114,7 @@ public class DrogstyleCommands {
 		List<ServerPlayerEntity> players = context.getSource().getServer().getPlayerManager().getPlayerList();
 		Map<ServerPlayerEntity, MutableText> foundPlayers = new HashMap<>();
 		for (ServerPlayerEntity player : players) {
-			MutableText output = NicknameHolder.of(player).styledNicknames$getOutput();
+			MutableText output = NicknameHolder.of(player).sn_getOutput();
 			if (output == null) continue;
 			if (output.getString().equals(nickname)) {
 				foundPlayers.put(player, output);
@@ -124,7 +126,7 @@ public class DrogstyleCommands {
 			if (foundPlayers.size() > 1) {
 				context.getSource().sendFeedback(() -> Text.literal("Found %s players with that name:".formatted(foundPlayers.size())), false);
 			}
-			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(() -> Text.literal("The username of %s is %s.".formatted(serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName())), false));
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(() -> Text.literal("The username of %s is %s.".formatted(serverPlayerEntity.getDisplayName(), serverPlayerEntity.getName())), false));
 		}
 		return 0;
 	}
@@ -132,7 +134,7 @@ public class DrogstyleCommands {
 	private static final SuggestionProvider<ServerCommandSource> NICKNAME_PROVIDER = (source, builder) -> {
 		List<ServerPlayerEntity> players = source.getSource().getServer().getPlayerManager().getPlayerList();
 		Set<String> nicknames = players.stream()
-			.map(player -> NicknameHolder.of(player).styledNicknames$getOutput())
+			.map(player -> NicknameHolder.of(player).sn_getOutput())
 			.filter(Objects::nonNull)
 			.map(Text::getString)
 			.collect(Collectors.toSet());

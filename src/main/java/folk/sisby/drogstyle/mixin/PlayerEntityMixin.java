@@ -24,7 +24,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 	public void drogtor$setNickname(@Nullable String nickname) {
 		String newName = nickname;
 		if (nickname != null) {
-			String oldName = NicknameHolder.of(this).styledNicknames$get();
+			String oldName = NicknameHolder.of(this).sn_get();
 			if (oldName != null) {
 				Matcher oldColor = COLOR_PATTERN.matcher(oldName);
 				if (oldColor.find() && oldColor.group(1) != null && !oldColor.group(1).contains("/")) {
@@ -36,7 +36,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 				}
 			}
 		}
-		NicknameHolder.of(this).styledNicknames$set(newName, true);
+		NicknameHolder.of(this).sn_set(newName, true);
 	}
 
 	@Override
@@ -46,7 +46,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 
 	@Override
 	public void drogtor$setBio(@Nullable String bio) {
-		String nickname = NicknameHolder.of(this).styledNicknames$get();
+		String nickname = NicknameHolder.of(this).sn_get();
 		if (nickname == null) {
 			nickname = ((PlayerEntity) (Object) this).getGameProfile().getName();
 		}
@@ -55,12 +55,12 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 		if (bio != null) {
 			nickname = "<hover:'%s'>".formatted(bio.replaceAll("[<'>]", "")) + nickname;
 		}
-		NicknameHolder.of(this).styledNicknames$set(nickname, true);
+		NicknameHolder.of(this).sn_set(nickname, true);
 	}
 
 	@Override
 	public @Nullable String drogtor$getNickname() {
-		Text nickname = NicknameHolder.of(this).styledNicknames$getParsed();
+		Text nickname = NicknameHolder.of(this).sn_getParsed();
 		if (nickname == null) return null;
 		return nickname.getString();
 	}
@@ -77,7 +77,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 
 	@Override
 	public @Nullable String drogtor$getBio() {
-		Text nickname = NicknameHolder.of(this).styledNicknames$getParsed();
+		Text nickname = NicknameHolder.of(this).sn_getParsed();
 		if (nickname == null) return null;
 		HoverEvent hoverEvent = nickname.getStyle().getHoverEvent();
 		if (hoverEvent == null) return null;
@@ -88,12 +88,12 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 
 	@Override
 	public boolean drogtor$isActive() {
-		return NicknameHolder.of(this).styledNicknames$shouldDisplay();
+		return NicknameHolder.of(this).sn_shouldDisplay();
 	}
 
 	@Override
 	public void drogstyle$setNameColor(@Nullable TextColor color) {
-		String nickname = NicknameHolder.of(this).styledNicknames$get();
+		String nickname = NicknameHolder.of(this).sn_get();
 		if (nickname == null) {
 			nickname = ((PlayerEntity) (Object) this).getGameProfile().getName();
 		}
@@ -102,12 +102,12 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 		if (color != null) {
 			nickname = (color.getName().startsWith("#") ? "<color:%s>" : "<%s>").formatted(color.getName()) + nickname;
 		}
-		NicknameHolder.of(this).styledNicknames$set(nickname, true);
+		NicknameHolder.of(this).sn_set(nickname, true);
 	}
 
 	@Override
 	public @Nullable TextColor drogstyle$getNameColor() {
-		Text nickname = NicknameHolder.of(this).styledNicknames$getParsed();
+		Text nickname = NicknameHolder.of(this).sn_getParsed();
 		if (nickname == null) return null;
 		return nickname.getStyle().getColor();
 	}
