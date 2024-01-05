@@ -114,7 +114,7 @@ public class DrogstyleCommands {
 		List<ServerPlayerEntity> players = context.getSource().getServer().getPlayerManager().getPlayerList();
 		Map<ServerPlayerEntity, MutableText> foundPlayers = new HashMap<>();
 		for (ServerPlayerEntity player : players) {
-			MutableText output = NicknameHolder.of(player).sn_getOutput();
+			MutableText output = NicknameHolder.of(player).styledNicknames$getOutput();
 			if (output == null) continue;
 			if (output.getString().equals(nickname)) {
 				foundPlayers.put(player, output);
@@ -134,7 +134,7 @@ public class DrogstyleCommands {
 	private static final SuggestionProvider<ServerCommandSource> NICKNAME_PROVIDER = (source, builder) -> {
 		List<ServerPlayerEntity> players = source.getSource().getServer().getPlayerManager().getPlayerList();
 		Set<String> nicknames = players.stream()
-			.map(player -> NicknameHolder.of(player).sn_getOutput())
+			.map(player -> NicknameHolder.of(player).styledNicknames$getOutput())
 			.filter(Objects::nonNull)
 			.map(Text::getString)
 			.collect(Collectors.toSet());
