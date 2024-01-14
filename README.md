@@ -41,7 +41,7 @@ Player usernames can also be checked via hovering over name formatting (e.g. `#`
 
 All mods are built on the work of many others.
 
-This mod specifically exists out of respect of the simplistic and self-expression focused design of Drogtor: The Nickinator, and seeks to continue it with the power of Styled Nicknames as a backend - please support the original mods, and don't send them drogstyle-related issues. 
+This mod specifically exists out of respect for the simplistic and self-expression focused design of Drogtor The Nickinator, and seeks to continue it with the power and flexibility of Styled Nicknames - over which drogstyle is only a thin wrapper! - please support the original mods, and don't send them drogstyle-related issues. 
 
 This mod is included in [Tinkerer's Quilt](https://modrinth.com/modpack/tinkerers-quilt) - our modpack about rediscovering vanilla.
 
