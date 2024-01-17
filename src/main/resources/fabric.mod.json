@@ -26,9 +26,6 @@
     "fabric-api": ">=${fapi}",
     "styled-nicknames": ">=${styledNicknames}"
   },
-  "suggests": {
-    "inventorytabs": ">=0.6.1"
-  },
   "provides": [
     "drogtor"
   ],
