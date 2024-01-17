@@ -39,7 +39,7 @@ repositories {
 dependencies {
 	// // Base // //
 	minecraft libs.mc
-	mappings libs.yarn
+	mappings variantOf(libs.yarn) { classifier "v2" }
 	modImplementation libs.fl
 	modImplementation libs.fapi
 
@@ -107,7 +107,7 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		dependencies {
 			required.project "styled-nicknames"
 		}
-		changelog = "Changelog: https://github.com/sisby-folk/drogstyle/releases/tag/v" + baseVersion
+		changelog = rootProject.file("CHANGELOG.md").text + "<br/>\nChangelog: https://github.com/sisby-folk/drogstyle/releases/tag/v$baseVersion"
 		syncBodyFrom = rootProject.file("README.md").text
 	}
 }
@@ -118,7 +118,7 @@ if (System.getenv("GITHUB_TOKEN")) {
 		token System.getenv("GITHUB_TOKEN")
 		owner "sisby-folk"
 		repo "drogstyle"
-		tagName 'v' + baseVersion
+		tagName "v$baseVersion"
 		releaseName baseVersion
 		targetCommitish defaultBranch
 		draft false
@@ -126,6 +126,7 @@ if (System.getenv("GITHUB_TOKEN")) {
 		releaseAssets remapJar.archiveFile
 		allowUploadToExisting true
 		generateReleaseNotes true
+		body rootProject.file("CHANGELOG.md").text
 	}
 	tasks.githubRelease.dependsOn remapJar
 }
