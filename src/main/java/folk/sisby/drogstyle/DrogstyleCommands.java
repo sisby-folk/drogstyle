@@ -121,8 +121,9 @@ public class DrogstyleCommands {
 			if (foundPlayers.size() > 1) {
 				context.getSource().sendFeedback(new LiteralText("Found %s players with that name:".formatted(foundPlayers.size())), false);
 			}
-			//noinspection NoTranslation - Deliberate misuse of translatable for string formatting
-			foundPlayers.forEach((serverPlayerEntity, mutableText) -> context.getSource().sendFeedback(new TranslatableText("The username of %s is %s.", serverPlayerEntity.getDisplayName(), serverPlayerEntity.getEntityName()), false));
+			foundPlayers.forEach((serverPlayerEntity, mutableText) -> {
+                context.getSource().sendFeedback(new LiteralText("The username of ").append(serverPlayerEntity.getDisplayName()).append(new LiteralText(" is ")).append(serverPlayerEntity.getName()), false);
+            });
 		}
 		return 0;
 	}
