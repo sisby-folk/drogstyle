@@ -39,7 +39,7 @@ repositories {
 dependencies {
 	// // Base // //
 	minecraft libs.mc
-	mappings libs.yarn
+	mappings variantOf(libs.yarn) { classifier "v2" }
 	modImplementation libs.fl
 	modImplementation libs.fapi
 
@@ -118,7 +118,7 @@ if (System.getenv("GITHUB_TOKEN")) {
 		token System.getenv("GITHUB_TOKEN")
 		owner "sisby-folk"
 		repo "drogstyle"
-		tagName 'v' + baseVersion
+		tagName "v$baseVersion"
 		releaseName baseVersion
 		targetCommitish defaultBranch
 		draft false
