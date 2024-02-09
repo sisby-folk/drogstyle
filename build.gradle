@@ -105,9 +105,9 @@ if (System.getenv("MODRINTH_TOKEN")) {
 		loaders = ['quilt', 'fabric']
 		detectLoaders = false
 		dependencies {
-			required.project "styled-nicknames"
+			required.version libs.styledNicknames.get().getName(), libs.versions.styledNicknames.get()
 		}
-		changelog = rootProject.file("CHANGELOG.md").text + "<br/>\nChangelog: https://github.com/sisby-folk/drogstyle/releases/tag/v$baseVersion"
+		changelog = rootProject.file("CHANGELOG.md").text + "\n\nChangelog: https://github.com/sisby-folk/$project.name/releases/tag/v$baseVersion"
 		syncBodyFrom = rootProject.file("README.md").text
 	}
 }
@@ -117,7 +117,7 @@ if (System.getenv("GITHUB_TOKEN")) {
 	githubRelease {
 		token System.getenv("GITHUB_TOKEN")
 		owner "sisby-folk"
-		repo "drogstyle"
+		repo project.name
 		tagName "v$baseVersion"
 		releaseName baseVersion
 		targetCommitish defaultBranch
