@@ -5,7 +5,6 @@ import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
-import com.mojang.datafixers.util.Either;
 import com.mojang.serialization.DataResult;
 import eu.pb4.stylednicknames.NicknameHolder;
 import eu.pb4.stylednicknames.config.ConfigManager;
@@ -43,12 +42,12 @@ public class DrogstyleCommands {
 
 	private static int setColor(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String colorString, Consumer<Text> feedback) {
 		if (colorString != null) {
-			Either<TextColor, DataResult.PartialResult<TextColor>> color = TextColor.parse(colorString).get();
-			if (color.right().isPresent()) {
+			DataResult<TextColor> color = TextColor.parse(colorString);
+			if (color.isError()) {
 				feedback.accept(Text.literal("Invalid color! must be a color name or # followed by a 6-digit hex code.").formatted(Formatting.RED));
 				return -1;
 			}
-			drogstylePlayer.drogstyle$setNameColor(color.left().get());
+			drogstylePlayer.drogstyle$setNameColor(color.getOrThrow());
 			feedback.accept(Text.literal("Your display name is now ").formatted(Formatting.YELLOW).append(player.getDisplayName().copy().formatted(Formatting.WHITE)));
 		} else {
 			drogstylePlayer.drogstyle$setNameColor(null);
