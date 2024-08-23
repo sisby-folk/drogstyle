@@ -1,35 +1,34 @@
 {
   "schemaVersion": 1,
-  "id": "drogstyle",
+  "id": "${modId}",
   "version": "${version}",
-  "name": "Drogstyle",
-  "description": "A simplified UX wrapper for styled nicknames",
+  "name": "${modName}",
+  "description": "${modDescription}",
   "authors": [
-    "Sisby folk"
+    "${authors}"
   ],
   "contact": {
-    "homepage": "https://modrinth.com/mod/drogstyle",
-    "issues": "https://github.com/sisby-folk/drogstyle/issues",
-    "sources": "https://github.com/sisby-folk/drogstyle"
+    "homepage": "${homepage}",
+    "issues": "${issues}",
+    "sources": "${sources}"
   },
-  "icon": "assets/drogstyle/icon.png",
-  "license": "LGPL-3.0-only",
-  "environment": "*",
+  "license": "${license}",
+  "icon": "assets/${modId}/icon.png",
+  "mixins": [
+    "${modId}.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=${fl}",
+    "minecraft": ">=${mc}",
+    "fabric-api": ">=${fapi}",
+    "styled-nicknames": ">=${styledNicknames}"
+  },
   "entrypoints": {
     "main": [
       "folk.sisby.drogstyle.Drogstyle"
     ]
   },
-  "depends": {
-    "minecraft": ">=${mc}",
-    "fabricloader": ">=${fl}",
-    "fabric-api": ">=${fapi}",
-    "styled-nicknames": ">=${styledNicknames}"
-  },
   "provides": [
     "drogtor"
-  ],
-  "mixins": [
-    "drogstyle.mixins.json"
   ]
 }
