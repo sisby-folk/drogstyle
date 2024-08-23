@@ -1,34 +1,34 @@
 {
-  "schemaVersion": 1,
-  "id": "${modId}",
-  "version": "${version}",
-  "name": "${modName}",
-  "description": "${modDescription}",
-  "authors": [
-    "${authors}"
-  ],
-  "contact": {
-    "homepage": "${homepage}",
-    "issues": "${issues}",
-    "sources": "${sources}"
-  },
-  "license": "${license}",
-  "icon": "assets/${modId}/icon.png",
-  "mixins": [
-    "${modId}.mixins.json"
-  ],
-  "depends": {
-    "fabricloader": ">=${fl}",
-    "minecraft": ">=${mc}",
-    "fabric-api": ">=${fapi}",
-    "styled-nicknames": ">=${styledNicknames}"
-  },
-  "entrypoints": {
-    "main": [
-      "folk.sisby.drogstyle.Drogstyle"
-    ]
-  },
-  "provides": [
-    "drogtor"
-  ]
+	"schemaVersion": 1,
+	"id": "${modId}",
+	"version": "${version}",
+	"name": "${modName}",
+	"description": "${modDescription}",
+	"authors": [
+		"${authors}"
+	],
+	"contact": {
+		"homepage": "${homepage}",
+		"issues": "${issues}",
+		"sources": "${sources}"
+	},
+	"license": "${license}",
+	"icon": "assets/${modId}/icon.png",
+	"mixins": [
+		"${modId}.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=${fl}",
+		"minecraft": ">=${mc}",
+		"fabric-api": ">=${fapi}",
+		"styled-nicknames": ">=${styledNicknames}"
+	},
+	"entrypoints": {
+		"main": [
+			"folk.sisby.drogstyle.Drogstyle"
+		]
+	},
+	"provides": [
+		"drogtor"
+	]
 }

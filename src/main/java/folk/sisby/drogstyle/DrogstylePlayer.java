@@ -6,5 +6,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface DrogstylePlayer extends DrogtorPlayer {
 	void drogstyle$setNameColor(@Nullable TextColor color);
-	@Nullable TextColor drogstyle$getNameColor();
+
+	@Nullable
+	TextColor drogstyle$getNameColor();
 }

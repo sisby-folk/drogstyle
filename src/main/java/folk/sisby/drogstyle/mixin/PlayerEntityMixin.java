@@ -17,8 +17,10 @@ import java.util.regex.Pattern;
 
 @Mixin(value = PlayerEntity.class, priority = 1001)
 public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
-	@Unique private static final Pattern COLOR_PATTERN = Pattern.compile("(<(color:'?|/?)?(yellow|dark_blue|dark_purple|gold|red|aqua|gray|light_purple|white|dark_gray|green|blue|dark_aqua|dark_green|black)'?>|<color:#[0-9a-fA-f]{6}>|</color>)", Pattern.CASE_INSENSITIVE);
-	@Unique private static final Pattern BIO_PATTERN = Pattern.compile("(<hover:'?[^<'>]+'?>)|</hover>", Pattern.CASE_INSENSITIVE);
+	@Unique
+	private static final Pattern COLOR_PATTERN = Pattern.compile("(<(color:'?|/?)?(yellow|dark_blue|dark_purple|gold|red|aqua|gray|light_purple|white|dark_gray|green|blue|dark_aqua|dark_green|black)'?>|<color:#[0-9a-fA-f]{6}>|</color>)", Pattern.CASE_INSENSITIVE);
+	@Unique
+	private static final Pattern BIO_PATTERN = Pattern.compile("(<hover:'?[^<'>]+'?>)|</hover>", Pattern.CASE_INSENSITIVE);
 
 	@Override
 	public void drogtor$setNickname(@Nullable String nickname) {

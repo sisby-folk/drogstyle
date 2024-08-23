@@ -11,5 +11,6 @@ public class CommandsMixin {
 	 * Allowing only info and /reload was too hard.
 	 */
 	@Overwrite
-	public static void register() {}
+	public static void register() {
+	}
 }
