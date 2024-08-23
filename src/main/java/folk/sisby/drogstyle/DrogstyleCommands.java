@@ -18,13 +18,26 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 import net.minecraft.util.Formatting;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Consumer;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 public class DrogstyleCommands {
 	private static final Pattern ESCAPE_PATTERN = Pattern.compile("\\\\.");
+	private static final SuggestionProvider<ServerCommandSource> NICKNAME_PROVIDER = (source, builder) -> {
+		List<ServerPlayerEntity> players = source.getSource().getServer().getPlayerManager().getPlayerList();
+		Set<String> nicknames = players.stream()
+			.map(player -> NicknameHolder.of(player).styledNicknames$getOutput())
+			.filter(Objects::nonNull)
+			.map(Text::getString)
+			.collect(Collectors.toSet());
+		return CommandSource.suggestMatching(nicknames, builder);
+	};
 
 	private static int setNick(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String nick, Consumer<Text> feedback) {
 		Text oldDn = player.getDisplayName();
@@ -76,10 +89,6 @@ public class DrogstyleCommands {
 		return 1;
 	}
 
-	public interface DrogstyleCommandExecutor {
-		int execute(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String arg, Consumer<Text> feedback);
-	}
-
 	public static int execute(CommandContext<ServerCommandSource> context, String arg, DrogstyleCommandExecutor executor) {
 		ServerPlayerEntity player;
 		try {
@@ -126,21 +135,11 @@ public class DrogstyleCommands {
 				context.getSource().sendFeedback(() -> Text.literal("Found %s players with that name:".formatted(foundPlayers.size())), false);
 			}
 			foundPlayers.forEach((serverPlayerEntity, mutableText) -> {
-                context.getSource().sendFeedback(() -> Text.literal("The username of ").append(serverPlayerEntity.getDisplayName()).append(Text.literal(" is ")).append(serverPlayerEntity.getName()), false);
-            });
+				context.getSource().sendFeedback(() -> Text.literal("The username of ").append(serverPlayerEntity.getDisplayName()).append(Text.literal(" is ")).append(serverPlayerEntity.getName()), false);
+			});
 		}
 		return 0;
 	}
-
-	private static final SuggestionProvider<ServerCommandSource> NICKNAME_PROVIDER = (source, builder) -> {
-		List<ServerPlayerEntity> players = source.getSource().getServer().getPlayerManager().getPlayerList();
-		Set<String> nicknames = players.stream()
-			.map(player -> NicknameHolder.of(player).styledNicknames$getOutput())
-			.filter(Objects::nonNull)
-			.map(Text::getString)
-			.collect(Collectors.toSet());
-		return CommandSource.suggestMatching(nicknames, builder);
-	};
 
 	public static void registerCommands(CommandDispatcher<ServerCommandSource> dispatcher, CommandRegistryAccess registryAccess, CommandManager.RegistrationEnvironment environment) {
 		dispatcher.register(
@@ -168,5 +167,9 @@ public class DrogstyleCommands {
 					.requires(src -> src.hasPermissionLevel(3))
 					.executes(DrogstyleCommands::reloadConfig))
 		);
+	}
+
+	public interface DrogstyleCommandExecutor {
+		int execute(ServerPlayerEntity player, DrogstylePlayer drogstylePlayer, String arg, Consumer<Text> feedback);
 	}
 }
