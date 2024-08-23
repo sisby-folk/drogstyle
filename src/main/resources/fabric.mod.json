@@ -20,8 +20,8 @@
 	"depends": {
 		"fabricloader": ">=${fl}",
 		"minecraft": ">=${mc}",
-		"fabric-api": ">=${fapi}",
-		"styled-nicknames": ">=${styledNicknames}"
+		"fabric-api": "*",
+		"styled-nicknames": "*"
 	},
 	"entrypoints": {
 		"main": [
