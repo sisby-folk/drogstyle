@@ -8,12 +8,13 @@ plugins {
 }
 
 version = "$baseVersion+$branch"
-archivesBaseName = project.slug
+base.archivesName = project.slug
 
 repositories {
-	maven { url "https://repo.sleeping.town/" }
-	maven { url "https://maven.nucleoid.xyz/" }
-	maven { url "https://api.modrinth.com/maven" }
+	maven { url = "https://repo.sleeping.town/" }
+	maven { url = "https://maven.nucleoid.xyz/" }
+	maven { url = "https://api.modrinth.com/maven" }
+	maven { url = "https://repo.codemc.io/repository/relativitymc/" }
 }
 
 dependencies {
@@ -66,8 +67,13 @@ java {
 
 jar {
 	from("LICENSE") {
-		rename { "${it}_${archivesBaseName}" }
+		rename { "${it}_${base.archivesName}" }
 	}
+}
+
+loom {
+	useIntermediateMappings = true
+	intermediaryUrl = 'https://repo.codemc.io/repository/relativitymc/org/relativitymc/intermediary/%1$s/intermediary-%1$s-v2.jar'
 }
 
 githubRelease {

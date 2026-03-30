@@ -50,7 +50,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 	public void drogtor$setBio(@Nullable String bio) {
 		String nickname = NicknameHolder.of(this).styledNicknames$get();
 		if (nickname == null) {
-			nickname = ((PlayerEntity) (Object) this).getGameProfile().getName();
+			nickname = ((PlayerEntity) (Object) this).getGameProfile().name();
 		}
 		nickname = BIO_PATTERN.matcher(nickname).replaceAll("");
 		if (nickname.isEmpty()) throw new IllegalStateException("Nickname would be empty!");
@@ -83,7 +83,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 		if (nickname == null) return null;
 		HoverEvent hoverEvent = nickname.getStyle().getHoverEvent();
 		if (hoverEvent == null) return null;
-		Text hoverText = hoverEvent.getValue(HoverEvent.Action.SHOW_TEXT);
+		Text hoverText = hoverEvent instanceof HoverEvent.ShowText st ? st.value() : null;
 		if (hoverText == null) return null;
 		return hoverText.getString();
 	}
@@ -97,7 +97,7 @@ public class PlayerEntityMixin implements DrogtorPlayer, DrogstylePlayer {
 	public void drogstyle$setNameColor(@Nullable TextColor color) {
 		String nickname = NicknameHolder.of(this).styledNicknames$get();
 		if (nickname == null) {
-			nickname = ((PlayerEntity) (Object) this).getGameProfile().getName();
+			nickname = ((PlayerEntity) (Object) this).getGameProfile().name();
 		}
 		nickname = COLOR_PATTERN.matcher(nickname).replaceAll("");
 		if (nickname.isEmpty()) throw new IllegalStateException("Nickname would be empty!");

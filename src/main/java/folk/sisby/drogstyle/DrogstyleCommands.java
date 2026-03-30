@@ -10,6 +10,7 @@ import eu.pb4.stylednicknames.NicknameHolder;
 import eu.pb4.stylednicknames.config.ConfigManager;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.command.CommandSource;
+import net.minecraft.command.DefaultPermissions;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -49,7 +50,7 @@ public class DrogstyleCommands {
 			drogstylePlayer.drogtor$setNickname(null);
 			feedback.accept(Text.literal("Your display name has been cleared.").formatted(Formatting.YELLOW));
 		}
-		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().getName() + "]");
+		Drogstyle.LOGGER.info("[Drogstyle] Player Nickname Change: '" + oldDn.getString() + "' -> '" + player.getDisplayName().getString() + "' [" + player.getGameProfile().name() + "]");
 		return 1;
 	}
 
@@ -164,7 +165,7 @@ public class DrogstyleCommands {
 						.executes(DrogstyleCommands::username)
 					))
 				.then(CommandManager.literal("reload")
-					.requires(src -> src.hasPermissionLevel(3))
+					.requires(src -> src.getPermissions().hasPermission(DefaultPermissions.ADMINS))
 					.executes(DrogstyleCommands::reloadConfig))
 		);
 	}
